@@ -2,7 +2,7 @@ package com.example.trivialapp.model
 
 class PreguntasRepositorio{
 
-    private val preguntas1:MutableList<Pregunta> = mutableListOf(
+    private val preguntasFacil: MutableList<Pregunta> = mutableListOf(
         Pregunta(
             "¿En qué país se encuentra la Torre Eiffel?",
             listOf(
@@ -47,10 +47,55 @@ class PreguntasRepositorio{
                 Respuesta("7", true),
                 Respuesta("8", false)
             )
+        ),
+        Pregunta(
+            "¿Cuál es la capital de Francia?",
+            listOf(
+                Respuesta("Lyon", false),
+                Respuesta("Marsella", false),
+                Respuesta("París", true),
+                Respuesta("Burdeos", false)
+            )
+        ),
+        Pregunta(
+            "¿Qué animal es el rey de la selva?",
+            listOf(
+                Respuesta("Elefante", false),
+                Respuesta("León", true),
+                Respuesta("Tigre", false),
+                Respuesta("Jirafa", false)
+            )
+        ),
+        Pregunta(
+            "¿Cuántos lados tiene un triángulo?",
+            listOf(
+                Respuesta("2", false),
+                Respuesta("3", true),
+                Respuesta("4", false),
+                Respuesta("5", false)
+            )
+        ),
+        Pregunta(
+            "¿Qué planeta es conocido como el 'planeta azul'?",
+            listOf(
+                Respuesta("Venus", false),
+                Respuesta("Marte", false),
+                Respuesta("Tierra", true),
+                Respuesta("Júpiter", false)
+            )
+        ),
+        Pregunta(
+            "¿Cuál es el río más largo del mundo?",
+            listOf(
+                Respuesta("Nilo", false),
+                Respuesta("Amazonas", true),
+                Respuesta("Yangtsé", false),
+                Respuesta("Misisipi", false)
+            )
         )
     )
 
-    private val preguntas2:MutableList<Pregunta> =  mutableListOf(
+    private val preguntasNormal: MutableList<Pregunta> = mutableListOf(
         Pregunta(
             "¿Cuál es la moneda oficial del Reino Unido?",
             listOf(
@@ -95,10 +140,55 @@ class PreguntasRepositorio{
                 Respuesta("Chino mandarín", true),
                 Respuesta("Hindi", false)
             )
+        ),
+        Pregunta(
+            "¿Qué científico formuló la teoría de la relatividad?",
+            listOf(
+                Respuesta("Isaac Newton", false),
+                Respuesta("Albert Einstein", true),
+                Respuesta("Stephen Hawking", false),
+                Respuesta("Galileo Galilei", false)
+            )
+        ),
+        Pregunta(
+            "¿Cuál es el país más grande del mundo por superficie?",
+            listOf(
+                Respuesta("China", false),
+                Respuesta("Estados Unidos", false),
+                Respuesta("Canadá", false),
+                Respuesta("Rusia", true)
+            )
+        ),
+        Pregunta(
+            "¿Qué escritor creó a Harry Potter?",
+            listOf(
+                Respuesta("J.R.R. Tolkien", false),
+                Respuesta("J.K. Rowling", true),
+                Respuesta("George R.R. Martin", false),
+                Respuesta("Stephen King", false)
+            )
+        ),
+        Pregunta(
+            "¿En qué continente se encuentra Egipto?",
+            listOf(
+                Respuesta("Asia", false),
+                Respuesta("Europa", false),
+                Respuesta("África", true),
+                Respuesta("América", false)
+            )
+        ),
+        Pregunta(
+            "¿Cuál es el hueso más largo del cuerpo humano?",
+            listOf(
+                Respuesta("Tibia", false),
+                Respuesta("Peroné", false),
+                Respuesta("Húmero", false),
+                Respuesta("Fémur", true)
+            )
         )
     )
 
-    private val preguntas3:MutableList<Pregunta> = mutableListOf(
+    private val preguntasDificil:MutableList<Pregunta> = mutableListOf(
         Pregunta(
             "¿Cuál es el elemento más abundante en la corteza terrestre?",
             listOf(
@@ -119,16 +209,16 @@ class PreguntasRepositorio{
         )
     )
 
-    fun getPreguntas1(): MutableList<Pregunta>{
-        return preguntas1
+    fun getPreguntaFacil(): MutableList<Pregunta> {
+        return preguntasFacil
+    }
+    fun getPreguntaNormal(): MutableList<Pregunta> {
+        return preguntasNormal
     }
 
-    fun getPreguntas2(): MutableList<Pregunta>{
-        return preguntas2
-    }
+    fun getPreguntaDificil(): MutableList<Pregunta> {
+        return preguntasDificil
 
-    fun getPreguntas3(): MutableList<Pregunta>{
-        return preguntas3
     }
 }
 

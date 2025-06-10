@@ -28,7 +28,7 @@ fun GameScreen(dificultad: String, navigateToGame: (Int) -> Unit) {
     val actualPregunta: Pregunta? by preguntaViewModel.actualPregunta.observeAsState() // obtiene la pregunta actual
     val contador: Int? by preguntaViewModel.contador.observeAsState(1) // lleva el control del numero de pregunta
     val puntuacion: Int by preguntaViewModel.puntuacion.observeAsState(0) // almacena la puntuacion
-    val progreso: Float? by preguntaViewModel.progreso.observeAsState() // progreso de la partida
+    val tiempoRestante by preguntaViewModel.tiempoRestante.observeAsState(10)
 
     // si se llega a la ronda 11, se navega a la siguiente pantalla con la puntuacion obtenida
     if (contador == 11) {
@@ -99,7 +99,7 @@ fun GameScreen(dificultad: String, navigateToGame: (Int) -> Unit) {
 
                     // barra de progreso de la partida
                     LinearProgressIndicator(
-                        progress = { progreso ?: 0f }, // usa el progreso actual o 0 si es nulo
+                        progress = tiempoRestante / 10f, // usa el progreso actual o 0 si es nulo
                         modifier = Modifier
                             .height(20.dp)
                             .fillMaxWidth(0.8f),
@@ -112,11 +112,3 @@ fun GameScreen(dificultad: String, navigateToGame: (Int) -> Unit) {
     }
 }
 
-// vista previa de la pantalla del juego con la dificultad "facil"
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun GameScreenPreview() {
-    TrivialAppTheme {
-        GameScreen(dificultad = "facil") { }
-    }
-}

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="Theme.TrivialApp" parent="android:Theme.Material.Light.NoActionBar" />
-    <style name="Theme.MySplashScreen" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenAnimatedIcon">@drawable/pantalla_carga_avion</item>
-    </style>
-    <item name="windowSplashScreenBackground" type="color">@color/mycolor</item>
 
+    <style name="Theme.MySplashScreen" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenAnimatedIcon">@drawable/gifyn</item>
+        <item name="postSplashScreenTheme">@style/Theme.TrivialApp</item>
+        <item name="windowSplashScreenBackground">@color/white</item>
+    </style>
 </resources>

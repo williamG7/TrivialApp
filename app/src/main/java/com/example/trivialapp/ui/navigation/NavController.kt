@@ -10,7 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.toRoute
 
 @Composable
-fun AppNavigation() {
+fun NavigationWrapper() {
     val navController = rememberNavController()
     NavHost(navController, Pantalla1) {
         composable<Pantalla1> {
@@ -18,11 +18,13 @@ fun AppNavigation() {
         }
         composable<Pantalla2> {backStackEntry ->
             val pantalla2 = backStackEntry.toRoute<Pantalla2>()
-            GameScreen(pantalla2.dificultad){ puntuacion -> navController.navigate(Pantalla3(puntuacion))}
+            GameScreen(pantalla2.dificultad){ puntuacion ->
+                navController.navigate(Pantalla3(puntuacion))}
         }
         composable<Pantalla3> { backStackEntry ->
             val pantalla3 = backStackEntry.toRoute<Pantalla3>()
-            ResultadoScreen(pantalla3.puntuacion) { navController.navigate(Pantalla1){
+            ResultadoScreen(pantalla3.puntuacion) {
+                navController.navigate(Pantalla1){
                 popUpTo<Pantalla1>{ inclusive= true } } }
         }
     }
