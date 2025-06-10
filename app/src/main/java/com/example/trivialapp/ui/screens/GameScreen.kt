@@ -3,6 +3,7 @@ package com.example.trivialapp.ui.screens
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
@@ -12,103 +13,104 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.trivialapp.R
 import com.example.trivialapp.model.Pregunta
-import com.example.trivialapp.ui.theme.TrivialAppTheme
 import com.example.trivialapp.viewmodel.PreguntasViewModel
 import com.example.trivialapp.viewmodel.ViewModelFactory
 
 @Composable
-fun GameScreen(dificultad: String, navigateToGame: (Int) -> Unit) {
-    val preguntaViewModel: PreguntasViewModel = viewModel(factory = ViewModelFactory(dificultad)) // obtiene el viewmodel con la dificultad seleccionada
-    val actualPregunta: Pregunta? by preguntaViewModel.actualPregunta.observeAsState() // obtiene la pregunta actual
-    val contador: Int? by preguntaViewModel.contador.observeAsState(1) // lleva el control del numero de pregunta
-    val puntuacion: Int by preguntaViewModel.puntuacion.observeAsState(0) // almacena la puntuacion
-    val tiempoRestante by preguntaViewModel.tiempoRestante.observeAsState(10)
+fun GameScreen(dificultad: String, navigateToResult: (Int) -> Unit) {
+    val preguntaViewModel: PreguntasViewModel = viewModel(factory = ViewModelFactory(dificultad))
+    val actualPregunta: Pregunta? by preguntaViewModel.actualPregunta.observeAsState()
+    val respuestas by preguntaViewModel.respuestas.observeAsState(emptyList())
+    val finPreguntas by preguntaViewModel.finPreguntas.observeAsState(false)
+    val timeLeft by preguntaViewModel.timeLeft.observeAsState(10)
+    val contador by preguntaViewModel.rondas.observeAsState(1)
+    val puntuacion by preguntaViewModel.puntuacion.observeAsState(0)
 
-    // si se llega a la ronda 11, se navega a la siguiente pantalla con la puntuacion obtenida
-    if (contador == 11) {
-        navigateToGame(puntuacion)
+    if (finPreguntas || contador == 11) {
+        navigateToResult(puntuacion)
     } else {
-        actualPregunta?.let { preguntas ->
-            val respuestasDesordenadas = preguntas.respuesta.shuffled() // mezcla las respuestas para que no siempre aparezcan en el mismo orden
+        Box(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.arcade_background),
+                contentDescription = "fondo de pantalla",
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.Crop
+            )
 
-            Box(
+            Column(
                 modifier = Modifier
                     .fillMaxSize()
+                    .background(Color(0x55000000))
+                    .padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
             ) {
-                // imagen de fondo de la pantalla del juego
-                Image(
-                    painter = painterResource(id = R.drawable.arcade_background),
-                    contentDescription = "fondo de pantalla",
-                    modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Crop
+                Spacer(modifier = Modifier.height(20.dp))
+
+                Text(
+                    "Ronda: $contador / 10",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp,
+                    color = Color.White
                 )
 
-                // contenido principal del juego
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(Color(0x55000000)), // agrega un fondo semitransparente encima de la imagen
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    // muestra el numero de ronda
-                    Text(
-                        "ronda ${contador} / 10",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 15.sp,
-                        modifier = Modifier.align(Alignment.CenterHorizontally),
-                        color = Color.White
-                    )
+                Spacer(modifier = Modifier.height(24.dp))
 
-                    // muestra la pregunta actual
-                    Text(
-                        text = preguntas.texto,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 21.sp,
-                        textAlign = TextAlign.Center,
-                        color = Color.White
-                    )
-
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    // muestra las opciones de respuesta
-                    Column {
-                        respuestasDesordenadas.forEach { respuesta ->
-                            OutlinedButton(
-                                onClick = { preguntaViewModel.verificarRespuesta(respuesta) }, // verifica si la respuesta es correcta
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = Color.Black,
-                                    contentColor = Color.White
-                                ),
-                                modifier = Modifier
-                                    .fillMaxWidth(0.8f)
-                                    .padding(vertical = 4.dp)
-                            ) {
-                                Text(respuesta.respuesta)
-                            }
-                        }
+                actualPregunta?.let {
+                    Card(
+                        modifier = Modifier.fillMaxWidth(0.85f),
+                        shape = RoundedCornerShape(20.dp),
+                        colors = CardDefaults.cardColors(containerColor = Color(0xFF222222))
+                    ) {
+                        Text(
+                            it.texto,
+                            fontSize = 22.sp,
+                            modifier = Modifier.padding(20.dp),
+                            textAlign = TextAlign.Center,
+                            fontWeight = FontWeight.Medium,
+                            color = Color.White
+                        )
                     }
-
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    // barra de progreso de la partida
-                    LinearProgressIndicator(
-                        progress = tiempoRestante / 10f, // usa el progreso actual o 0 si es nulo
-                        modifier = Modifier
-                            .height(20.dp)
-                            .fillMaxWidth(0.8f),
-                        color = Color(0xFF000000),
-                        trackColor = Color(0xFFFAFAFA)
-                    )
                 }
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                respuestas.forEach { respuesta ->
+                    OutlinedButton(
+                        onClick = {
+                            preguntaViewModel.actualizarPuntuacion(respuesta.correcta)
+                        },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color.Black,
+                            contentColor = Color.White
+                        ),
+                        modifier = Modifier
+                            .fillMaxWidth(0.8f)
+                            .padding(vertical = 6.dp),
+                        shape = RoundedCornerShape(12.dp)
+                    ) {
+                        Text(respuesta.respuesta)
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                LinearProgressIndicator(
+                    progress = timeLeft / 10f,
+                    modifier = Modifier
+                        .height(20.dp)
+                        .fillMaxWidth(0.8f),
+                    color = Color(0xFF000000),
+                    trackColor = Color(0xFFFAFAFA)
+                )
             }
         }
     }
 }
-

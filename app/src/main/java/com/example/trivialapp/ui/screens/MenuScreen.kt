@@ -3,6 +3,7 @@ package com.example.trivialapp.ui.screens
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -22,14 +23,14 @@ import com.example.trivialapp.R
 
 @Composable
 fun MenuScreen(navigateToNext: (String) -> Unit) {
-    var showWarning by remember { mutableStateOf(false) } // variable para mostrar advertencia si no se selecciona dificultad
-    var seleccionarDificultad by remember { mutableStateOf("") } // guarda la dificultad seleccionada
+    var showWarning by remember { mutableStateOf(false) }
+    var seleccionarDificultad by remember { mutableStateOf("") }
+    val dificultades = listOf("Fácil", "Normal", "Difícil")
 
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
-
-        // imagen de fondo del menu
+        // Imagen de fondo
         Image(
             painter = painterResource(id = R.drawable.menu_background),
             contentDescription = "Fondo del menu",
@@ -37,117 +38,127 @@ fun MenuScreen(navigateToNext: (String) -> Unit) {
             contentScale = ContentScale.Crop
         )
 
-        // contenido principal del menu
+        // Contenido principal con fondo blanco semitransparente
         Column(
-            Modifier
+            modifier = Modifier
                 .fillMaxSize()
                 .padding(bottom = 5.dp)
-                .background(Color.White.copy(alpha = 0.7f)), // fondo blanco semitransparente
+                .background(Color.White.copy(alpha = 0.7f)),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
+            verticalArrangement = Arrangement.Center
         ) {
-            // titulo del menu
+            // Título
             Text(
                 text = "TRIVIAL",
                 fontWeight = FontWeight.ExtraBold,
                 fontSize = 50.sp,
                 color = Color.Black,
+                textAlign = TextAlign.Center
             )
+            Spacer(modifier = Modifier.height(16.dp))
 
-            // componente personalizado del menu desplegable
-            MyDropDownMenu(seleccionarDificultad) {
-                seleccionarDificultad = it
-            }
+            // Imagen del logo
+            Image(
+                painter = painterResource(id = R.drawable.logotriviados),
+                contentDescription = "Logo Trivial",
+                modifier = Modifier.size(180.dp)
+            )
+            Spacer(modifier = Modifier.height(24.dp))
 
-            // mensaje de advertencia si no se selecciona una dificultad
+            // Menú desplegable con el estilo del segundo código pero usando tus variables
+            DropMenu(
+                dificultades = dificultades,
+                selectedText = seleccionarDificultad
+            ) { seleccionarDificultad = it }
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            // Mensaje de advertencia
             if (showWarning) {
                 Text(
-                    "Seleccione una dificultad",
+                    "Por favor, selecciona una dificultad",
                     color = Color.Red,
                     fontSize = 20.sp,
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
             }
 
-            // boton para iniciar la partida
+            // Botón iniciar partida con tu estilo y lógica
             Button(
                 onClick = {
                     if (seleccionarDificultad.isEmpty()) {
-                        showWarning = true // si no se elige dificultad, se muestra la advertencia
+                        showWarning = true
                     } else {
                         showWarning = false
-                        navigateToNext(seleccionarDificultad) // navega a la pantalla de juego con la dificultad seleccionada
+                        navigateToNext(seleccionarDificultad)
                     }
                 },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Black,
-                    contentColor = Color.White
-                ),
-                border = BorderStroke(2.dp, color = Color.Black)
+                modifier = Modifier
+                    .fillMaxWidth(0.7f)
+                    .height(50.dp),
+                shape = RoundedCornerShape(12.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
+                border = BorderStroke(2.dp, Color.Black)
             ) {
-                Text(text = "Iniciar Partida")
+                Text(text = "Iniciar Partida", color = Color.White, fontSize = 18.sp)
             }
         }
     }
 }
 
 @Composable
-fun MyDropDownMenu(seleccionarDificultad: String, onValueChange: (String) -> Unit) {
-    var expandir by remember { mutableStateOf(false) } // controla si el menu desplegable esta abierto o cerrado
-    val dificultades = listOf(
-        "NIVEL FACIL",
-        "NIVEL MEDIO",
-        "NIVEL DIFICIL"
-    ) // lista de niveles de dificultad
+fun DropMenu(
+    dificultades: List<String>,
+    selectedText: String,
+    selectedDificultad: (String) -> Unit
+) {
+    var expanded by remember { mutableStateOf(false) }
 
-    Box {
-        // campo de texto deshabilitado que se usa como boton para abrir el menu
+    Column(
+        modifier = Modifier
+            .fillMaxWidth(0.7f)
+            .padding(horizontal = 16.dp)
+    ) {
         OutlinedTextField(
-            value = seleccionarDificultad,
-            onValueChange = { onValueChange(it) },
-            enabled = false, // deshabilitado para que solo se seleccione del menu
-            textStyle = TextStyle(color = Color.Black, textAlign = TextAlign.Center),
+            value = if (selectedText.isEmpty()) "DIFICULTAD" else selectedText,
+            onValueChange = {},
+            enabled = false,
             readOnly = true,
-            label = {
-                Text(
-                    "Dificultad",
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth(),
-                    color = Color.Black,
-                )
-            },
             modifier = Modifier
-                .clickable { expandir = true } // hace que al hacer clic se despliegue el menu
-                .fillMaxWidth(0.7f)
-                .background(color = Color.LightGray, shape = RoundedCornerShape(25.dp))
-                .align(Alignment.Center),
+                .fillMaxWidth()
+                .border(BorderStroke(1.dp, Color.Black))
+                .clickable { expanded = true },
+            textStyle = TextStyle(
+                fontSize = 24.sp,
+                textAlign = TextAlign.Center,
+                fontWeight = FontWeight.Bold,
+                color = Color.Black
+            ),
             shape = RoundedCornerShape(25.dp)
         )
-
-        // menu desplegable
         DropdownMenu(
-            expanded = expandir,
-            onDismissRequest = { expandir = false }, // cierra el menu si se hace clic fuera
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
             modifier = Modifier
-                .fillMaxWidth(0.7f)
-                .align(Alignment.Center),
+                .fillMaxWidth()
+                .border(BorderStroke(1.dp, Color.Black)),
             containerColor = Color.White,
             shape = RoundedCornerShape(25.dp)
         ) {
-            // crea un item en el menu para cada nivel de dificultad
             dificultades.forEach { dificultad ->
                 DropdownMenuItem(
                     text = {
                         Text(
-                            text = dificultad,
-                            color = Color.Black,
+                            dificultad,
+                            fontSize = 24.sp,
                             textAlign = TextAlign.Center,
                             modifier = Modifier.fillMaxWidth(),
+                            color = Color.Black
                         )
                     },
                     onClick = {
-                        expandir = false // cierra el menu al seleccionar una opcion
-                        onValueChange(dificultad) // actualiza la dificultad seleccionada
+                        selectedDificultad(dificultad)
+                        expanded = false
                     }
                 )
             }

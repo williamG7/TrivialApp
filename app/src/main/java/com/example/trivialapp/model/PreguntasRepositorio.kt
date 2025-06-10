@@ -1,6 +1,6 @@
 package com.example.trivialapp.model
 
-class PreguntasRepositorio{
+class PreguntasRepositorio(dificultad: String){
 
     private val preguntasFacil: MutableList<Pregunta> = mutableListOf(
         Pregunta(
@@ -218,8 +218,12 @@ class PreguntasRepositorio{
 
     fun getPreguntaDificil(): MutableList<Pregunta> {
         return preguntasDificil
-
     }
+
+    fun getRespuestas(pregunta: Pregunta): List<Respuesta> {
+        return pregunta.respuesta
+    }
+
 }
 
 
