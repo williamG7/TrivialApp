@@ -188,7 +188,7 @@ class PreguntasRepositorio(dificultad: String){
         )
     )
 
-    private val preguntasDificil:MutableList<Pregunta> = mutableListOf(
+    private val preguntasDificil: MutableList<Pregunta> = mutableListOf(
         Pregunta(
             "¿Cuál es el elemento más abundante en la corteza terrestre?",
             listOf(
@@ -206,8 +206,81 @@ class PreguntasRepositorio(dificultad: String){
                 Respuesta("Marte", true),
                 Respuesta("Saturno", false)
             )
+        ),
+        Pregunta(
+            "¿Cuál es la velocidad de la luz en el vacío?",
+            listOf(
+                Respuesta("300,000 km/s", true),
+                Respuesta("150,000 km/s", false),
+                Respuesta("450,000 km/s", false),
+                Respuesta("600,000 km/s", false)
+            )
+        ),
+        Pregunta(
+            "¿Qué científico desarrolló la teoría de la relatividad?",
+            listOf(
+                Respuesta("Isaac Newton", false),
+                Respuesta("Albert Einstein", true),
+                Respuesta("Nikola Tesla", false),
+                Respuesta("Galileo Galilei", false)
+            )
+        ),
+        Pregunta(
+            "¿Cuál es la fórmula química del ácido sulfúrico?",
+            listOf(
+                Respuesta("H2SO4", true),
+                Respuesta("HCl", false),
+                Respuesta("NaCl", false),
+                Respuesta("H2CO3", false)
+            )
+        ),
+        Pregunta(
+            "¿En qué año llegó el hombre a la Luna por primera vez?",
+            listOf(
+                Respuesta("1969", true),
+                Respuesta("1972", false),
+                Respuesta("1965", false),
+                Respuesta("1980", false)
+            )
+        ),
+        Pregunta(
+            "¿Cuál es el órgano más grande del cuerpo humano?",
+            listOf(
+                Respuesta("El hígado", false),
+                Respuesta("La piel", true),
+                Respuesta("El corazón", false),
+                Respuesta("El pulmón", false)
+            )
+        ),
+        Pregunta(
+            "¿Qué partícula subatómica tiene carga negativa?",
+            listOf(
+                Respuesta("Protón", false),
+                Respuesta("Neutrón", false),
+                Respuesta("Electrón", true),
+                Respuesta("Positrón", false)
+            )
+        ),
+        Pregunta(
+            "¿Cuál es la capital de Mongolia?",
+            listOf(
+                Respuesta("Ulan Bator", true),
+                Respuesta("Astana", false),
+                Respuesta("Tiflis", false),
+                Respuesta("Bakú", false)
+            )
+        ),
+        Pregunta(
+            "¿Qué idioma tiene más hablantes nativos en el mundo?",
+            listOf(
+                Respuesta("Inglés", false),
+                Respuesta("Mandarín", true),
+                Respuesta("Español", false),
+                Respuesta("Hindi", false)
+            )
         )
     )
+
 
     fun getPreguntaFacil(): MutableList<Pregunta> {
         return preguntasFacil

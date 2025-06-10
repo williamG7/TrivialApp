@@ -86,6 +86,9 @@ fun GameScreen(dificultad: String, navigateToResult: (Int) -> Unit) {
                     OutlinedButton(
                         onClick = {
                             preguntaViewModel.actualizarPuntuacion(respuesta.correcta)
+                            preguntaViewModel.siguientePregunta()
+                            preguntaViewModel.updateRondas()
+                            preguntaViewModel.updateTimeLeft(10)
                         },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color.Black,

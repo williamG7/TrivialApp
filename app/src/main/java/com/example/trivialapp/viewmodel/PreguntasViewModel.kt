@@ -61,7 +61,7 @@ class PreguntasViewModel(dificultad: String) : ViewModel() {
     init {
         when (dificultad) {
             "Facil" -> preguntas.addAll(PreguntasRepositorio(dificultad).getPreguntaFacil())
-            "Medio" -> preguntas.addAll(PreguntasRepositorio(dificultad).getPreguntaNormal())
+            "Normal" -> preguntas.addAll(PreguntasRepositorio(dificultad).getPreguntaNormal())
             "Dificil" -> preguntas.addAll(PreguntasRepositorio(dificultad).getPreguntaDificil())
         }
         preguntas.shuffle()
@@ -88,12 +88,6 @@ class PreguntasViewModel(dificultad: String) : ViewModel() {
         if (correcta) {
             _puntuacion.value = (_puntuacion.value ?: 0) + 10
         }
-    }
-
-    fun responder(esCorrecta: Boolean) {
-        actualizarPuntuacion(esCorrecta)
-        updateRondas()
-        siguientePregunta()
     }
 
     override fun onCleared() {

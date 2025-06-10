@@ -25,7 +25,7 @@ import com.example.trivialapp.R
 fun MenuScreen(navigateToNext: (String) -> Unit) {
     var showWarning by remember { mutableStateOf(false) }
     var seleccionarDificultad by remember { mutableStateOf("") }
-    val dificultades = listOf("Fácil", "Normal", "Difícil")
+    val dificultades = listOf("Facil", "Normal", "Dificil")
 
     Box(
         modifier = Modifier.fillMaxSize()
